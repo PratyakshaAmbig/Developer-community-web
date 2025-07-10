@@ -26,15 +26,28 @@ const Connections = () => {
 
   if (!connections) return;
 
-  if (!connections.length === 0)
-    return <h1 className="text-red-400">No connections found!</h1>;
+  if (connections.length === 0)
+    return <h1 className="flex justify-center my-10">No connections found!</h1>;
   return (
     <div className="text-center my-10 mx-auto max-w-1/2">
       <h1 className="font-bold text-3xl">Connections</h1>
       {connections.map((connection) => {
-        const { _id,firstName, lastName, age, photoUrl, gender, about } = connection;
+        const { _id, firstName, lastName, age, photoUrl, gender, about } =
+          connection;
         return (
-          <ReUseUserCard key={_id} userData={{ firstName, lastName, age, photoUrl, gender, about, showButton:false }}/>
+          <ReUseUserCard
+            key={_id}
+            userData={{
+              firstName,
+              lastName,
+              age,
+              photoUrl,
+              gender,
+              about,
+              showButton: false,
+              requestId: null,
+            }}
+          />
         );
       })}
     </div>

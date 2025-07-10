@@ -10,7 +10,6 @@ const Requests = () => {
   const dispatch = useDispatch();
 
   const fetchRequests = async () => {
-    if (requests) return;
     try {
       const res = await axios.get(BASE_URL + "/user/requests/received", {
         withCredentials: true,
@@ -27,12 +26,12 @@ const Requests = () => {
 
   if (!requests) return;
 
-  if (requests.length === 0) return <h1>No Requests found!</h1>;
+  if (requests.length === 0) return <h1 className="flex justify-center my-10">No Requests found!</h1>;
   return (
     <div className="text-center my-10 mx-auto max-w-1/2">
       <h1 className="font-bold text-3xl">Connections</h1>
-      {requests.map((connection) => {
-        const { _id,firstName, lastName, age, photoUrl, gender, about } = connection.fromUserId;
+      {requests.map((request) => {
+        const { _id,firstName, lastName, age, photoUrl, gender, about } = request.fromUserId;
         return (
           <ReUseUserCard
             key={_id}
@@ -44,6 +43,7 @@ const Requests = () => {
               gender,
               about,
               showButton: true,
+              requestId:request._id
             }}
           />
         );
