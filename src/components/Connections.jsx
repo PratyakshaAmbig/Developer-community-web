@@ -29,7 +29,7 @@ const Connections = () => {
   if (connections.length === 0)
     return <h1 className="flex justify-center my-10">No connections found!</h1>;
   return (
-    <div className="text-center my-10 mx-auto max-w-1/2">
+    <div className="text-center my-10 mx-auto sm:max-w-1/2 w-full">
       <h1 className="font-bold text-3xl">Connections</h1>
       {connections.map((connection) => {
         const { _id, firstName, lastName, age, photoUrl, gender, about } =

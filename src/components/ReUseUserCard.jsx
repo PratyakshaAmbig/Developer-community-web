@@ -19,19 +19,19 @@ const ReUseUserCard = ({ userData }) => {
     }
   }
   return (
-    <div className="flex justify-between m-4 p-4 rounded-lg bg-base-300">
-      <div className="flex items-center">
+    <div className="flex flex-col sm:flex-row justify-between m-4 p-4 rounded-lg bg-base-300">
+      <div className="flex flex-col sm:flex-row items-center">
         <div>
           <img alt="photo" className="w-20 h-20 rounded-full" src={photoUrl} />
         </div>
-        <div className="text-left mx-4">
+        <div className="sm:text-left text-center py-4 mx-4">
           <h2 className="font-bold text-xl">{firstName + " " + lastName}</h2>
           <p>{about}</p>
           {age && gender && <p>{age + ", " + gender}</p>}
         </div>
       </div>
       {showButton && (
-        <div className="flex items-center gap-5 my-4">
+        <div className="flex items-center justify-center gap-5 my-4">
           <button className="btn btn-primary" onClick={()=>reviewRequest('rejected', requestId)}>Reject</button>
           <button className="btn btn-secondary" onClick={()=>reviewRequest('accepted',requestId)}>Accept</button>
         </div>

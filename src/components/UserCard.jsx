@@ -12,13 +12,12 @@ const UserCard = ({user}) => {
     try {
       const res = await axios.post(BASE_URL + '/request/sent/' + status + "/"+ userID,{},{withCredentials:true});
       dispatch(removeFeed(userID))
-      console.log(res)
     } catch (error) {
       console.log(error)
     }
    }
   return (
-    <div className="card bg-base-300 w-96 shadow-sm">
+    <div className="card bg-base-300 w-96 shadow-sm m-4">
       <figure>
         <img
           src={photoUrl}
