@@ -1,11 +1,55 @@
-import React from 'react'
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BASE_URL } from "../utils/constants";
+import { addRequests } from "../utils/requestSlice";
+import ReUseUserCard from "./ReUseUserCard";
 
 const Requests = () => {
-  return (
-    <div>
-      Requests
-    </div>
-  )
-}
+  const requests = useSelector((store) => store.requests);
+  const dispatch = useDispatch();
 
-export default Requests
+  const fetchRequests = async () => {
+    if (requests) return;
+    try {
+      const res = await axios.get(BASE_URL + "/user/requests/received", {
+        withCredentials: true,
+      });
+      dispatch(addRequests(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  if (!requests) return;
+
+  if (requests.length === 0) return <h1>No Requests found!</h1>;
+  return (
+    <div className="text-center my-10 mx-auto max-w-1/2">
+      <h1 className="font-bold text-3xl">Connections</h1>
+      {requests.map((connection) => {
+        const { _id,firstName, lastName, age, photoUrl, gender, about } = connection.fromUserId;
+        return (
+          <ReUseUserCard
+            key={_id}
+            userData={{
+              firstName,
+              lastName,
+              age,
+              photoUrl,
+              gender,
+              about,
+              showButton: true,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+export default Requests;
