@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
+import DynamicToastMessage from "./DynamicToastMessage";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName);
@@ -14,9 +15,22 @@ const EditProfile = ({ user }) => {
   const [about, setAbout] = useState(user?.about);
   const [error, setError] = useState("");
 
-  const [showToast, setShowToast] = useState(false);
+  const toastMessageStatus  = JSON.parse(localStorage.getItem('ToastMessage'));
+
+  const [showToast, setShowToast] = useState(toastMessageStatus);
+
+  const [dropdownOptionOpen, setDropdownOptionOpen] = useState(false);
 
   const dispatch = useDispatch();
+
+  const genderDropdownData = ["Male", "Female", "Others"];
+
+  if(toastMessageStatus){
+    setTimeout(()=>{
+      setShowToast(false);
+      localStorage.setItem('ToastMessage', false);
+    },1000)
+  }
 
   const saveProfile = async () => {
     // clear the error
@@ -32,7 +46,7 @@ const EditProfile = ({ user }) => {
 
       setTimeout(() => {
         setShowToast(false);
-      }, 2000);
+      }, 1000);
     } catch (error) {
       setError(error?.response?.data);
     }
@@ -87,13 +101,42 @@ const EditProfile = ({ user }) => {
                 </div>
                 <div className="w-full flex flex-col gap-2">
                   <label className="font-semibold">Gender:</label>
-                  <input
-                    type="text"
-                    placeholder="gender"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="p-2 border border-gray-600 focus:outline-none rounded-sm"
-                  />
+                  <div
+                    className="flex w-full items-center border border-gray-600 rounded-sm cursor-pointer"
+                    onClick={() => setDropdownOptionOpen(!dropdownOptionOpen)}
+                  >
+                    <div className="p-2 focus:outline-none rounded-sm w-[90%]">{gender || 'Gender'}</div>
+                    <svg
+                      className={`${dropdownOptionOpen ? "rotate-180" : ""} lucide lucide-chevron-down-icon lucide-chevron-down`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </div>
+                  {dropdownOptionOpen && (
+                    <div className="border border-gray-600 rounded-sm transition-all duration-1000">
+                      {genderDropdownData.map((data) => (
+                        <div
+                          key={data}
+                          className="bg-base-300 hover:bg-base-100 p-2 rounded-sm cursor-pointer "
+                          onClick={() => {
+                            setGender(data);
+                            setDropdownOptionOpen(false);
+                          }}
+                        >
+                          {data}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="w-full flex flex-col gap-2">
                   <label className="font-semibold">About:</label>
@@ -120,11 +163,7 @@ const EditProfile = ({ user }) => {
         />
       </div>
       {showToast && (
-        <div className="toast toast-top toast-center">
-          <div className="alert alert-success">
-            <span>Profile saved successfully.</span>
-          </div>
-        </div>
+        <DynamicToastMessage message={toastMessageStatus?'Account created ':'Profile saved'}/>
       )}
     </>
   );
