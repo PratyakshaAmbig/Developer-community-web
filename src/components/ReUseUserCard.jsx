@@ -1,10 +1,12 @@
 import axios from "axios";
 import React from "react";
 import { BASE_URL } from "../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeRequests } from "../utils/requestSlice";
+import { language } from "../utils/language";
 
 const ReUseUserCard = ({ userData }) => {
+  const lang = useSelector((store)=>store.config.language);
   const { firstName, lastName, age, photoUrl, gender, about, showButton,requestId } = userData;
 
   const dispatch = useDispatch();
@@ -32,8 +34,8 @@ const ReUseUserCard = ({ userData }) => {
       </div>
       {showButton && (
         <div className="flex items-center justify-center gap-5 my-4">
-          <button className="btn btn-primary" onClick={()=>reviewRequest('rejected', requestId)}>Reject</button>
-          <button className="btn btn-secondary" onClick={()=>reviewRequest('accepted',requestId)}>Accept</button>
+          <button className="btn btn-primary" onClick={()=>reviewRequest('rejected', requestId)}>{language[lang].Reject}</button>
+          <button className="btn btn-secondary" onClick={()=>reviewRequest('accepted',requestId)}>{language[lang].Accept}</button>
         </div>
       )}
     </div>

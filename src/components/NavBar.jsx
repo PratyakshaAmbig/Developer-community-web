@@ -1,12 +1,15 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
+import { language, SUPPORTED_LANGUAGES } from "../utils/language";
+import { toggleLanguage } from "../utils/languageSlice";
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
+  const lang = useSelector((store)=> store.config.language);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,14 +23,26 @@ const NavBar = () => {
       console.log(error)
     }
   }
+
+  const handleChangeLanguage = (e)=>{
+    dispatch(toggleLanguage(e.target.value))
+  }
   return (
     <div className="navbar bg-base-300 shadow-sm">
       <div className="flex-1">
         <Link to='/' className="btn btn-ghost text-xl">Developer Community 🧑🏻‍💻</Link>
-      </div>
+      </div>  
+      
       {user && (
         <div className="flex gap-2 items-center">
-          <p className="hidden sm:block">Welcome, {user.firstName}</p>
+          <select className="cursor-pointer border-none" onChange={handleChangeLanguage} value={lang}>
+             {
+              SUPPORTED_LANGUAGES.map((lang)=>(
+                <option key={lang} className="bg-base-300 cursor-pointer" value={lang}>{lang}</option>
+              ))
+             }
+          </select>
+          <p className="hidden sm:block">{language[lang]?.Welcome}, {user.firstName}</p>
           <div className="dropdown dropdown-end mx-5">
             <div
               tabIndex={0}
@@ -47,18 +62,18 @@ const NavBar = () => {
             >
               <li>
                 <Link to='/profile' className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
+                  {language[lang].Profile}
+                  <span className="badge">{language[lang].New}</span>
                 </Link>
               </li>
               <li>
-                <Link to='/connections'>Connections</Link>
+                <Link to='/connections'>{language[lang].Connections}</Link>
               </li>
               <li>
-                <Link to='/requests'>Requests</Link>
+                <Link to='/requests'>{language[lang].Requests}</Link>
               </li>
               <li>
-                <a onClick={handleLogoout}>Logout</a>
+                <a onClick={handleLogoout}>{language[lang].Logout}</a>
               </li>
             </ul>
           </div>

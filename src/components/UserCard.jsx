@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { use } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { removeFeed } from "../utils/feedSlice";
+import { language } from "../utils/language";
 
 const UserCard = ({user}) => {
+   const lang = useSelector((store)=> store.config.language);
    const { _id, firstName, lastName, about, photoUrl, gender, age} = user;
    const dispatch = useDispatch();
 
@@ -35,8 +37,8 @@ const UserCard = ({user}) => {
             )
         }
         <div className="card-actions justify-center my-4">
-          <button className="btn btn-primary" onClick={()=>handleSendRequest('ignored', _id)}>Ingnore</button>
-          <button className="btn btn-secondary" onClick={()=>handleSendRequest('interested',_id)}>Interested</button>
+          <button className="btn btn-primary" onClick={()=>handleSendRequest('ignored', _id)}>{language[lang].Ignore}</button>
+          <button className="btn btn-secondary" onClick={()=>handleSendRequest('interested',_id)}>{language[lang].Interested}</button>
         </div>
       </div>
     </div>

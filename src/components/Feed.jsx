@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFeed } from "../utils/feedSlice";
 import UserCard from "./UserCard";
 import DynamicToastMessage from "./DynamicToastMessage";
+import { language } from "../utils/language";
 
 const Feed = () => {
+  const lang = useSelector((store)=>store.config.language);
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
 
@@ -38,7 +40,7 @@ const Feed = () => {
 
   if (!feed) return;
   if (feed.length == 0)
-    return <h1 className="flex justify-center my-10">No new users found!</h1>;
+    return <h1 className="flex justify-center my-10">{language[lang].NoNewUser}</h1>;
   return (
     feed && (
       <>
@@ -47,7 +49,7 @@ const Feed = () => {
         </div>
         {
           showToast && (
-            <DynamicToastMessage message="Login" />
+            <DynamicToastMessage message={language[lang].Login} />
           )
         }
       </>

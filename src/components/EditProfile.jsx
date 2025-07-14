@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import UserCard from "./UserCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import DynamicToastMessage from "./DynamicToastMessage";
+import { language } from "../utils/language";
 
 const EditProfile = ({ user }) => {
+  const lang = useSelector((store)=>store.config.language);
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   const [photoUrl, setPhotoUrl] = useState(user?.photoUrl);
@@ -23,7 +25,11 @@ const EditProfile = ({ user }) => {
 
   const dispatch = useDispatch();
 
-  const genderDropdownData = ["Male", "Female", "Others"];
+  const genderDropdownData = [
+    {id:'Male', name:language[lang].Male},
+    {id:'Female', name:language[lang].Female},
+    {id:'Others', name:language[lang].Others}
+  ];
 
   if(toastMessageStatus){
     setTimeout(()=>{
@@ -57,10 +63,10 @@ const EditProfile = ({ user }) => {
         <div className="flex justify-center">
           <div className="card card-border bg-base-300 w-96">
             <div className="card-body">
-              <h2 className="text-xl font-bold text-center">Edit Profile</h2>
+              <h2 className="text-xl font-bold text-center">{language[lang].EditProfile}</h2>
               <div className="space-y-2 w-full">
                 <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold">First Name:</label>
+                  <label className="font-semibold">{language[lang].FirstName} :</label>
                   <input
                     type="text"
                     value={firstName}
@@ -70,7 +76,7 @@ const EditProfile = ({ user }) => {
                   />
                 </div>
                 <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold">Last Name:</label>
+                  <label className="font-semibold">{language[lang].LastName} :</label>
                   <input
                     type="text"
                     placeholder="last name"
@@ -80,7 +86,7 @@ const EditProfile = ({ user }) => {
                   />
                 </div>
                 <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold">Photo URL:</label>
+                  <label className="font-semibold">{language[lang].PhotoURL} :</label>
                   <input
                     type="text"
                     placeholder="photo URL"
@@ -90,7 +96,7 @@ const EditProfile = ({ user }) => {
                   />
                 </div>
                 <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold">age:</label>
+                  <label className="font-semibold">{language[lang].Age} :</label>
                   <input
                     type="number"
                     placeholder="last name"
@@ -100,12 +106,12 @@ const EditProfile = ({ user }) => {
                   />
                 </div>
                 <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold">Gender:</label>
+                  <label className="font-semibold">{language[lang].Gender} :</label>
                   <div
                     className="flex w-full items-center border border-gray-600 rounded-sm cursor-pointer"
                     onClick={() => setDropdownOptionOpen(!dropdownOptionOpen)}
                   >
-                    <div className="p-2 focus:outline-none rounded-sm w-[90%]">{gender || 'Gender'}</div>
+                    <div className="p-2 focus:outline-none rounded-sm w-[90%]">{language[lang][gender] || language[lang].Gender}</div>
                     <svg
                       className={`${dropdownOptionOpen ? "rotate-180" : ""} lucide lucide-chevron-down-icon lucide-chevron-down`}
                       xmlns="http://www.w3.org/2000/svg"
@@ -125,21 +131,21 @@ const EditProfile = ({ user }) => {
                     <div className="border border-gray-600 rounded-sm transition-all duration-1000">
                       {genderDropdownData.map((data) => (
                         <div
-                          key={data}
+                          key={data.id}
                           className="bg-base-300 hover:bg-base-100 p-2 rounded-sm cursor-pointer "
                           onClick={() => {
-                            setGender(data);
+                            setGender(data.id);
                             setDropdownOptionOpen(false);
                           }}
                         >
-                          {data}
+                          {data.name}
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
                 <div className="w-full flex flex-col gap-2">
-                  <label className="font-semibold">About:</label>
+                  <label className="font-semibold">{language[lang].AboutMe} :</label>
                   <textarea
                     type="text"
                     placeholder="about"
@@ -152,7 +158,7 @@ const EditProfile = ({ user }) => {
               <p className="text-red-500">{error}</p>
               <div className="card-actions justify-center m-2">
                 <button className="btn btn-primary" onClick={saveProfile}>
-                  Save Profile
+                  {language[lang].SaveProfile}
                 </button>
               </div>
             </div>
@@ -163,7 +169,7 @@ const EditProfile = ({ user }) => {
         />
       </div>
       {showToast && (
-        <DynamicToastMessage message={toastMessageStatus?'Account created ':'Profile saved'}/>
+        <DynamicToastMessage message={toastMessageStatus? language[lang].AccountCreated: language[lang].ProfileSaved}/>
       )}
     </>
   );

@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { addRequests } from "../utils/requestSlice";
 import ReUseUserCard from "./ReUseUserCard";
+import { language } from "../utils/language";
 
 const Requests = () => {
+  const lang = useSelector((store)=>store.config.language);
   const requests = useSelector((store) => store.requests);
   const dispatch = useDispatch();
 
@@ -26,10 +28,10 @@ const Requests = () => {
 
   if (!requests) return;
 
-  if (requests.length === 0) return <h1 className="flex justify-center my-10">No Requests found!</h1>;
+  if (requests.length === 0) return <h1 className="flex justify-center my-10">{language[lang].NoRequests}</h1>;
   return (
     <div className="text-center my-10 mx-auto sm:max-w-1/2 w-full">
-      <h1 className="font-bold text-3xl">Connections</h1>
+      <h1 className="font-bold text-3xl">{language[lang].Requests}</h1>
       {requests.map((request) => {
         const { _id,firstName, lastName, age, photoUrl, gender, about } = request.fromUserId;
         return (
