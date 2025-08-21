@@ -77,18 +77,18 @@ const NavBar = () => {
               >
                 <li>
                   <Link to="/profile" className="justify-between">
-                    {language[lang].Profile}
-                    <span className="badge">{language[lang].New}</span>
+                    {language[lang]?.Profile}
+                    <span className="badge">{language[lang]?.New}</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/connections">{language[lang].Connections}</Link>
+                  <Link to="/connections">{language[lang]?.Connections}</Link>
                 </li>
                 <li>
-                  <Link to="/requests">{language[lang].Requests}</Link>
+                  <Link to="/requests">{language[lang]?.Requests}</Link>
                 </li>
                 <li>
-                  <a onClick={handleLogoout}>{language[lang].Logout}</a>
+                  <a onClick={handleLogoout}>{language[lang]?.Logout}</a>
                 </li>
               </ul>
             </div>

@@ -111,6 +111,15 @@ nvm install 20.15.0
 
     - Modify the BASEURL in frontend project to /api
 
+
+    ----- Suppose I have modify the changes in the frontend and push the code to the git hub ---
+    - I have get the updated code in the remote system it means aws
+    - git pull
+    - and again build the application
+    - npm run build
+    - copy the all the file from the dist folder and add to the /var/www/html
+    - sudo scp -r dist/* /var/www/html
+
    
 
 
